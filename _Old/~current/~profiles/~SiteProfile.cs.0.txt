@@ -1,4 +1,4 @@
-﻿namespace Ans.Net8.Web
+﻿namespace Ans.Net10.Web
 {
 
 	public class SiteProfile(

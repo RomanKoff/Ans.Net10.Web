@@ -28,17 +28,18 @@ namespace Ans.Net10.Web
 				throw GetExceptionParamRequired(nameof(SystemToken));
 		}
 
+		public string DefaultLayout { get; set; } // Required!
+		public string SystemToken { get; set; } // Required!
+
 		public string Culture { get; set; } = "ru";
 		public string DefaultTelCode { get; set; } = "+7-812";
-		public string DefaultCssContainer { get; set; }
-		public string DefaultLayout { get; set; }
+		public string DefaultCssContainer { get; set; } = "container";
 		public string SystemLayout { get; set; }
 		public string CorsProfile { get; set; }
-		public bool UseDeveloperMode { get; set; }
-		public bool UseRuntimeCompilation { get; set; }
-		public bool UseSessions { get; set; }
+		public bool UseDeveloperMode { get; set; } = false;
+		public bool UseRuntimeCompilation { get; set; } = false;
+		public bool UseSessions { get; set; } = false;
 		public string[] Swagger { get; set; }
-		public string SystemToken { get; set; }
 		public string[] Mimetypes { get; set; }
 		public string[] Routes { get; set; }
 		public ErrorsOptions Errors { get; set; }

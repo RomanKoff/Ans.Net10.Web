@@ -3,8 +3,6 @@ using Ans.Net10.Web.Middlewares;
 using Ans.Net10.Web.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
-using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -53,9 +51,9 @@ namespace Ans.Net10.Web
 
 			// IServiceCollection (scoped)
 
-			builder.Services.AddScoped(
-				x => x.GetRequiredService<IUrlHelperFactory>().GetUrlHelper(
-					x.GetRequiredService<IActionContextAccessor>().ActionContext));
+			//builder.Services.AddScoped(
+			//	x => x.GetRequiredService<IUrlHelperFactory>().GetUrlHelper(
+			//		x.GetRequiredService<IHttpContextAccessor>().HttpContext));
 			builder.Services.AddScoped<IViewRenderService, AnsViewRenderService>();
 			builder.Services.AddScoped<CurrentContext>();
 

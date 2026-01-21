@@ -1,0 +1,44 @@
+﻿using Ans.Net10.Common;
+
+namespace Ans.Net10.Web.Forms
+{
+
+	public class Edit_Reference
+		: _Edit_Registry_Base,
+		IFormEditControl
+	{
+
+		public Edit_Reference(
+			string name,
+			int? value,
+			RegistryList registry,
+			RegistryModeEnum mode,
+			string cssClasses)
+			: base(
+				  name,
+				  value?.ToString(),
+				  registry,
+				  mode,
+				  cssClasses,
+				  false)
+		{
+		}
+
+
+		public Edit_Reference(
+			string name,
+			int? value,
+			RegistryList registry,
+			string cssClasses = null)
+			: this(
+				  name,
+				  value,
+				  registry,
+				  RegistryModeEnum.Auto,
+				  cssClasses)
+		{
+		}
+
+	}
+
+}

@@ -1,0 +1,32 @@
+@*
+	Компонент библиотеки Ans.Net10.Web.
+	Код не предназначен для редактирования и компиляции во время выполнения!
+*@
+@model Type
+@{
+	var info1 = new ObjInfoBuilder(Model);
+	var name1 = info1.InfoType.GetCSharpTypeName();
+}
+
+<h4 id="@name1">@name1</h4>
+@{
+	var code1 = new StringBuilder();
+	var type1 = Enum.GetUnderlyingType(Model).GetCSharpTypeName();
+	var f1 = type1 != "int";
+
+	code1.AppendLine($"public enum {name1}{f1.Make($" : {type1}")}\n{{");
+
+	var names1 = Enum.GetNames(Model);
+	var values1 = (int[])Enum.GetValues(Model);
+
+	for (var i1 = 0; i1 < names1.Length; i1++)
+	{
+		var n1 = names1[i1];
+		var v1 = values1[i1];
+		code1.AppendLine($"\t{n1}{f1.Make(" = {v1},", ",")}");
+	}
+
+	code1.AppendLine($"}}");
+}
+
+<pre><code class="language-csharp line-numbers py-1">@SuppTypograph.GetText2Html(code1.ToString())</code></pre>

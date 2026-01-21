@@ -1,0 +1,57 @@
+﻿using Microsoft.AspNetCore.Html;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Text;
+using System.Text.Encodings.Web;
+
+namespace Ans.Net10.Web
+{
+
+	public static partial class _e_IHtmlHelper
+	{
+
+		public static string GetStringFromRazor(
+			this IHtmlHelper helper,
+			Func<dynamic, IHtmlContent> html)
+		{
+			return helper.ViewContext.HttpContext.GetStringFromRazor(html);
+		}
+
+
+		public static HtmlString GetHtmlFromRazor(
+			this IHtmlHelper helper,
+			Func<dynamic, IHtmlContent> html)
+		{
+			return new HtmlString(helper.GetStringFromRazor(html));
+		}
+
+
+		public static string GetStringFromRazor(
+			this IHtmlHelper helper,
+			string template,
+			params Func<dynamic, IHtmlContent>[] args)
+		{
+			var _args1 = new List<string>();
+			foreach (var item1 in args)
+			{
+				var sb1 = new StringBuilder();
+				using TextWriter writer1 = new StringWriter(sb1);
+				var encoder1 = (HtmlEncoder)helper.ViewContext.HttpContext.RequestServices
+					.GetService(typeof(HtmlEncoder)) ?? HtmlEncoder.Default;
+				item1("").WriteTo(writer1, encoder1);
+				_args1.Add(sb1.ToString());
+			}
+			return string.Format(template, [.. _args1]);
+		}
+
+
+		public static HtmlString GetHtmlFromRazor(
+			this IHtmlHelper helper,
+			string template,
+			params Func<dynamic, IHtmlContent>[] args)
+		{
+			return new HtmlString(helper.GetStringFromRazor(template, args));
+		}
+
+	}
+
+}

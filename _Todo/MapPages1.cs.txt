@@ -1,4 +1,4 @@
-﻿namespace Ans.Net8.Web.Services
+﻿namespace Ans.Net10.Web.Services
 {
 
 	public class MapPageItem

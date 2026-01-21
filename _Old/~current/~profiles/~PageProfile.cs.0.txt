@@ -1,7 +1,7 @@
-﻿using Ans.Net8.Common;
+﻿using Ans.Net10.Common;
 using Microsoft.AspNetCore.Html;
 
-namespace Ans.Net8.Web
+namespace Ans.Net10.Web
 {
 
 	public class PageProfile(

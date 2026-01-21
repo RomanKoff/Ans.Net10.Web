@@ -1,0 +1,28 @@
+@*
+	Компонент библиотеки Ans.Net10.Web.
+	Код не предназначен для редактирования и компиляции во время выполнения!
+*@
+@model Type
+@{
+	var info1 = new ObjInfoBuilder(Model);
+	var name1 = info1.InfoType.GetCSharpTypeName();
+}
+
+<h4 id="@name1">@name1</h4>
+@{
+	var code1 = new StringBuilder();
+
+	code1.AppendLine($"public class {name1}\n{{");
+
+	if (info1.ReadWriteProperties?.Count() > 0)
+		foreach (var item1 in info1.ReadWriteProperties)
+			code1.AppendLine($"\tpublic {item1.TypeName} {item1.Name} {{ get; set; }}");
+
+	if (info1.ReadOnlyProperties?.Count() > 0)
+		foreach (var item1 in info1.ReadOnlyProperties)
+			code1.AppendLine($"\tpublic {item1.TypeName} {item1.Name} {{ get; }}");
+
+	code1.AppendLine($"}}");
+}
+
+<pre><code class="language-csharp line-numbers py-1">@SuppTypograph.GetText2Html(code1.ToString())</code></pre>

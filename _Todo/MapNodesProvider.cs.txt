@@ -1,9 +1,9 @@
-﻿using Ans.Net8.Common;
+﻿using Ans.Net10.Common;
 using Microsoft.AspNetCore.Hosting;
 using System.Diagnostics;
 using System.Xml.Serialization;
 
-namespace Ans.Net8.Web.Services
+namespace Ans.Net10.Web.Services
 {
 
 	/*
@@ -52,19 +52,19 @@ namespace Ans.Net8.Web.Services
 			if (!File.Exists(file1))
 			{
 				_missed = true;
-				Debug.WriteLine("[Ans.Net8.Web] MapNodesProvider_Xml.GetMap() : MISSED");
+				Debug.WriteLine("[Ans.Net10.Web] MapNodesProvider_Xml.GetMap() : MISSED");
 				return null;
 			}
 			try
 			{
 				var data1 = SuppXml.GetObjectFromXmlFile<MapNodesXmlRoot>(
-					file1, Common._Consts.ENCODING_UTF8, "http://tempuri.org/Ans.Net8.Web.Nodes.xsd");
+					file1, Common._Consts.ENCODING_UTF8, "http://tempuri.org/Ans.Net10.Web.Nodes.xsd");
 				_map = new MapNodes0(_getBranch(data1.Items), hostVirtualPath);
-				Debug.WriteLine("[Ans.Net8.Web] MapNodesProvider_Xml.GetMap() : LOADED");
+				Debug.WriteLine("[Ans.Net10.Web] MapNodesProvider_Xml.GetMap() : LOADED");
 			}
 			catch (Exception)
 			{
-				throw new Exception("[Ans.Net8.Web] MapNodes compile error.");
+				throw new Exception("[Ans.Net10.Web] MapNodes compile error.");
 			}
 			return _map;
 		}
@@ -107,7 +107,7 @@ namespace Ans.Net8.Web.Services
 
 
 	/// <summary>
-	/// http://tempuri.org/Ans.Net8.Web.Nodes.xsd
+	/// http://tempuri.org/Ans.Net10.Web.Nodes.xsd
 	/// </summary>
 	[XmlRoot("nodes")]
 	public class MapNodesXmlRoot
