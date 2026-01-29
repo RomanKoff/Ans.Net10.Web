@@ -74,7 +74,7 @@ namespace Ans.Net10.Web.Forms
 						Registry,
 						IsMultiple);
 					ctrl1.AddCssClass(
-						"form-select guap-tom-select");
+						"form-select tom-select");
 					break;
 			}
 			ctrl1.MergeAttribute("data-value", Value);
