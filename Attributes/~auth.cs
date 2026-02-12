@@ -9,28 +9,19 @@ namespace Ans.Net10.Web.Attributes
 		: TypeFilterAttribute
 	{
 		public ActionAccessAttribute(
-			string catalog,
-			string controller,
-			string action)
+			string path)
 			: base(typeof(ActionAccessFilter))
 		{
-			Arguments = [catalog, controller ?? "", action ?? ""];
+			Arguments = [path];
 		}
 	}
 
 
 
 	public class ActionAccessFilter(
-		string catalog,
-		string controller,
-		string action)
+		string path)
 		: IAuthorizationFilter
 	{
-
-		private readonly string _catalog = catalog;
-		private readonly string _controller = controller;
-		private readonly string _action = action;
-
 
 		/* methods */
 
@@ -38,10 +29,10 @@ namespace Ans.Net10.Web.Attributes
 		public void OnAuthorization(
 			AuthorizationFilterContext context)
 		{
-			var context1 = context.HttpContext;
-			var user1 = context1.User;
-			if (context1.IsClaimsAdmin()
-				|| user1.TestClaimsAction(_catalog, _controller, _action))
+			var http1 = context.HttpContext;
+			var user1 = http1.User;
+			if (http1.IsClaimsAdmin()
+				|| user1.AllowAccessAction(path))
 				return;
 			context.Result = new ForbidResult();
 		}
@@ -54,28 +45,27 @@ namespace Ans.Net10.Web.Attributes
 		: TypeFilterAttribute
 	{
 		public ClaimRequirementAttribute(
-			string claimType,
-			string claimValue)
+			string type,
+			Func<string, bool> funcValue)
 			: base(typeof(ClaimRequirementFilter))
 		{
-			Arguments = [new Claim(claimType, claimValue)];
+			Arguments = [type, funcValue];
 		}
 	}
 
 
 
 	public class ClaimRequirementFilter(
-		Claim claim)
+		string type,
+		Func<string, bool> funcValue)
 		: IAuthorizationFilter
 	{
-		private readonly Claim _claim = claim;
-
 		public void OnAuthorization(
 			AuthorizationFilterContext context)
 		{
-			var hasClaim1 = context.HttpContext.User.Claims.Any(
-				x => x.Type == _claim.Type && x.Value == _claim.Value);
-			if (!hasClaim1)
+			var f1 = context.HttpContext.User.Claims.Any(
+				x => x.Type == type && funcValue(x.Value));
+			if (!f1)
 				context.Result = new ForbidResult();
 		}
 	}

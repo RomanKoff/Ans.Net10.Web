@@ -1,4 +1,33 @@
 
+
+	MvcAccess
+
+		Catalog1;Catalog2:Controller1,Controller2@Action1|Action2,Controller3;Catalog3
+		
+		? каталог без уточнений
+			T полный доступ к его контроллерам и их действиям
+			F
+				доступ только к указанным контроллерам
+				? контроллер без уточнений
+					T доступ ко всем действиям
+					F доступ только к указанным действиям
+				
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	Current.GetPageUrl(target)
 	Current.GetResUrl(target, useAbsoluteUrl)
 
