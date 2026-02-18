@@ -126,8 +126,8 @@ namespace Ans.Net10.Web.Crud
 
 
 		public string DefaultOrder { get; set; }
-		public int DefaultItemsOnPage { get; set; } = 25;
-		public int MaxItemsOnPage { get; set; } = 500;
+		public int DefaultItemsOnPage { get; set; } = 50;
+		public int MaxItemsOnPage { get; set; } = 600;
 		public CrudViewEnum ViewAfterAdd { get; set; } = CrudViewEnum.List;
 		public string CustomListViewName { get; set; }
 		public string CustomAddViewName { get; set; }

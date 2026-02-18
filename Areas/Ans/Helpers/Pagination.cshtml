@@ -4,33 +4,36 @@
 *@
 @model PaginationHelper
 @{
-	var page1 = Current.QueryString.GetInt("page", 1);
-	var qs2 = Current.QueryString.GetHelper();
-	Model.CurrentPage = page1;
+    var page1 = Current.QueryString.GetInt("page", 1);
+    var qs2 = Current.QueryString.GetHelper();
+    Model.CurrentPage = page1;
+
+    if (Model.TotalPages == 1)
+        return;
 }
 <nav class="my-3" aria-label="Page navigation">
-	<ul class="pagination pagination-sm d-flex flex-wrap row-gap-1">
-		@if (Model.HasItemsBefore)
-		{
-			qs2.Append("page", Model.PreviousPage);
-			<li class="page-item"><a class="page-link" href="@qs2.MakeQueryString("")"><i class="bi-chevron-left"></i></a></li>
-		}
-		@for (int i1 = Model.StartPage; i1 <= Model.EndPage; i1++)
-		{
-			if (Model.CurrentPage == i1)
-			{
-				<li class="page-item active" aria-current="page"><span class="page-link">@i1</span></li>
-			}
-			else
-			{
-				qs2.Append("page", i1);
-				<li class="page-item"><a class="page-link" href="@qs2.MakeQueryString("")">@i1</a></li>
-			}
-		}
-		@if (Model.HasItemsAfter)
-		{
-			qs2.Append("page", Model.NextPage);
-			<li class="page-item"><a class="page-link" href="@qs2.MakeQueryString("")"><i class="bi-chevron-right"></i></a></li>
-		}
-	</ul>
+    <ul class="pagination pagination-sm d-flex flex-wrap row-gap-1">
+        @if (Model.HasItemsBefore)
+        {
+            qs2.Append("page", Model.PreviousPage);
+            <li class="page-item"><a class="page-link" href="@qs2.MakeQueryString("")"><i class="bi-chevron-left"></i></a></li>
+        }
+        @for (int i1 = Model.StartPage; i1 <= Model.EndPage; i1++)
+        {
+            if (Model.CurrentPage == i1)
+            {
+                <li class="page-item active" aria-current="page"><span class="page-link">@i1</span></li>
+            }
+            else
+            {
+                qs2.Append("page", i1);
+                <li class="page-item"><a class="page-link" href="@qs2.MakeQueryString("")">@i1</a></li>
+            }
+        }
+        @if (Model.HasItemsAfter)
+        {
+            qs2.Append("page", Model.NextPage);
+            <li class="page-item"><a class="page-link" href="@qs2.MakeQueryString("")"><i class="bi-chevron-right"></i></a></li>
+        }
+    </ul>
 </nav>
