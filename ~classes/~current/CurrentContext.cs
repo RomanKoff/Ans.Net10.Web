@@ -65,6 +65,7 @@ namespace Ans.Net10.Web
 			QueryString = new(this);
 			Send = new(this);
 			WebApi = new(this);
+			WebGrid = new(this);
 		}
 
 
@@ -99,6 +100,7 @@ namespace Ans.Net10.Web
 		public QueryStringService QueryString { get; }
 		public SendService Send { get; }
 		public WebApiService WebApi { get; }
+		public WebGridService WebGrid { get; }
 
 
 		private IEnumerable<LinkBuilder> _breadcrumbs;
