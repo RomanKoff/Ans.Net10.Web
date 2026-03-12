@@ -69,6 +69,10 @@ namespace Ans.Net10.Web.Forms
 		public HtmlString Text_SubmitAdd_Html
 			=> field ??= Form.Text_SubmitAdd.ToHtml(true);
 
+		
+		public HtmlString Text_SubmitAddAndEdit_Html
+			=> field ??= Form.Text_SubmitAddAndEdit.ToHtml(true);
+
 
 		public HtmlString Text_SubmitSave_Html
 			=> field ??= Form.Text_SubmitSave.ToHtml(true);

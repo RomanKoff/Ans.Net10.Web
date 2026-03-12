@@ -73,7 +73,7 @@ namespace Ans.Net10.Web.TagHelpers
 			get => field ?? _options.DefaultTelCode;
 			set => field = value;
 		}
-		
+
 
 		[HtmlAttributeName(Href_Site_Res_AttributeName)]
 		public string HrefSiteResData { get; set; }
@@ -165,9 +165,11 @@ namespace Ans.Net10.Web.TagHelpers
 			 * +79817321620    -> +7-981-732-16-20             // федеральный
 			 * +78137551204    -> +7-813-755-12-04             // настраиваемый
 			 * 3122107,1234    -> +7-812-312-21-07 доп. 1234   // с подкодом    
+			 * 3122107/1234    -> +7-812-312-21-07 доп. 1234   // с подкодом    
+			 * 3122107w1234    -> +7-812-312-21-07 доп. 1234   // с подкодом    
 			 */
 			var num1 = tel[0] == '+' ? tel : $"{CodeData}{tel}";
-			var a1 = num1.Split(','); //.Split('w');
+			var a1 = num1.Split([',', '/', 'w']);
 			var num2 = SuppValues.FixTelephoneRuCityCode(
 				SuppValues.GetDigitalOnly(a1[0]));
 			var href1 = $"+{num2}";
@@ -187,7 +189,7 @@ namespace Ans.Net10.Web.TagHelpers
 		}
 
 
-		private void _makeHref(
+		private static void _makeHref(
 			TagHelperOutput output,
 			string url1)
 		{
@@ -263,7 +265,7 @@ namespace Ans.Net10.Web.TagHelpers
 		/* privates */
 
 
-		private void _makeSrc(
+		private static void _makeSrc(
 			TagHelperOutput output,
 			string url1)
 		{

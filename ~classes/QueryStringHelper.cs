@@ -194,6 +194,9 @@ namespace Ans.Net10.Web
 		/* methods */
 
 
+		// string
+
+
 		public void Append(
 			string key,
 			string value)
@@ -206,62 +209,6 @@ namespace Ans.Net10.Web
 					Params.Add(key, value);
 			}
 		}
-
-
-		public void Append(
-			string key,
-			int? value)
-		{
-			if (value != null && value != 0)
-				Append(key, value.ToString());
-		}
-
-
-		public void Append(
-			string key,
-			bool value)
-		{
-			if (value)
-				Append(key, "true");
-		}
-
-
-		public void Append(
-			string key,
-			DateTime? value)
-		{
-			// 2008-06-15T21:15:07 o:2008-06-15T21:15:07.0000000
-			if (value != null)
-				Append(key, value?.ToString("s"));
-		}
-
-
-		public void Append(
-			string key,
-			DateOnly? value)
-		{
-			if (value != null)
-				Append(key, value?.ToString());
-		}
-
-
-		public void Append(
-			string key,
-			TimeOnly? value)
-		{
-			if (value != null)
-				Append(key, value?.ToString());
-		}
-
-
-		public void Remove(
-			string key)
-		{
-			Params.Remove(key);
-		}
-
-
-		// string
 
 
 		public void AppendString(
@@ -287,6 +234,15 @@ namespace Ans.Net10.Web
 		// int
 
 
+		public void Append(
+			string key,
+			int? value)
+		{
+			if (value != null && value != 0)
+				Append(key, value.ToString());
+		}
+
+
 		public void AppendInt(
 			ViewDataDictionary viewData,
 			string key,
@@ -310,6 +266,15 @@ namespace Ans.Net10.Web
 		// bool
 
 
+		public void Append(
+			string key,
+			bool value)
+		{
+			if (value)
+				Append(key, "true");
+		}
+
+
 		public void AppendBool(
 			ViewDataDictionary viewData,
 			string key)
@@ -329,6 +294,16 @@ namespace Ans.Net10.Web
 
 
 		// DateTime
+
+
+		public void Append(
+			string key,
+			DateTime? value)
+		{
+			// 2008-06-15T21:15:07 o:2008-06-15T21:15:07.0000000
+			if (value != null)
+				Append(key, value?.ToString("s"));
+		}
 
 
 		public void AppendDateTime(
@@ -358,6 +333,15 @@ namespace Ans.Net10.Web
 		// DateOnly
 
 
+		public void Append(
+			string key,
+			DateOnly? value)
+		{
+			if (value != null)
+				Append(key, value?.ToString());
+		}
+
+
 		public void AppendDateOnly(
 			ViewDataDictionary viewData,
 			string key,
@@ -385,6 +369,15 @@ namespace Ans.Net10.Web
 		// TimeOnly
 
 
+		public void Append(
+			string key,
+			TimeOnly? value)
+		{
+			if (value != null)
+				Append(key, value?.ToString());
+		}
+
+
 		public void AppendTimeOnly(
 			ViewDataDictionary viewData,
 			string key,
@@ -406,6 +399,16 @@ namespace Ans.Net10.Web
 				? helper.GetTimeOnly(key)
 				: helper.GetTimeOnly(key, defaultValue.Value);
 			Append(key, value1);
+		}
+
+
+		// ---
+
+
+		public void Remove(
+			string key)
+		{
+			Params.Remove(key);
 		}
 
 	}
