@@ -30,7 +30,7 @@ namespace Ans.Net10.Web.Forms
 			Control = new(s1);
 			Control.AddCssClass("form-control bg-light text-dark");
 			if (MaxWidth > 0)
-				Control.AddStyle($"max-width:{MaxWidth}rem;");
+				Control.ExpandStyleAttribute($"max-width:{MaxWidth}rem;");
 			_hidden = new(Name, ValueData);
 		}
 

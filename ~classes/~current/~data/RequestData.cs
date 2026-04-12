@@ -158,12 +158,50 @@ namespace Ans.Net10.Web
 					}
 				}
 			}
-			_nodeRelease();
-			_pageRelease();
+			NodeRelease();
+			PageRelease();
 			IsStartSite = string.IsNullOrEmpty(RelativeUrl);
 			IsStartNode = RelativeUrl == _current.Node.Url;
 			IsStartPage = ViewPath.EndsWith("/start");
 			return "";
+		}
+
+
+		/* methods */
+
+
+		public void NodeRelease()
+		{
+			if (_current.Site.MapNodes == null)
+				return;
+			_current.Site.MapNodes.ClearActives();
+			var node1 = _current.Site.MapNodes.GetItem(NodeName);
+			if (node1 == null)
+				return;
+			node1.SetActive();
+			_current.Node.NodeItem = node1;
+			if (node1.HasMasters)
+				foreach (var item1 in node1.Masters
+					.Where(x => x.Type != MapItemTypeEnum.Group)
+					.Reverse())
+					_current.Node.InsertParent(item1.Link);
+		}
+
+
+		public void PageRelease()
+		{
+			if (_current.Node.MapPages == null)
+				return;
+			_current.Node.MapPages.ClearActives();
+			var page1 = _current.Node.MapPages.GetItem(QueryPath);
+			if (page1 == null)
+				return;
+			page1.SetActive();
+			_current.Page.PageItem = page1;
+			if (page1.HasMasters)
+				foreach (var item1 in page1.Masters
+					.Reverse())
+					_current.Page.InsertParent(item1.Link);
 		}
 
 
@@ -216,41 +254,6 @@ namespace Ans.Net10.Web
 			QueryPath = s1 == "_main/start"
 				? _current.Host.VirtualPath
 				: $"{_current.Host.VirtualPath}/{s1}";
-		}
-
-
-		private void _nodeRelease()
-		{
-			if (_current.Site.MapNodes == null)
-				return;
-			_current.Site.MapNodes.ClearActives();
-			var node1 = _current.Site.MapNodes.GetItem(NodeName);
-			if (node1 == null)
-				return;
-			node1.SetActive();
-			_current.Node.NodeItem = node1;
-			if (node1.HasMasters)
-				foreach (var item1 in node1.Masters
-					.Where(x => x.Type != MapItemTypeEnum.Group)
-					.Reverse())
-					_current.Node.InsertParent(item1.Link);
-		}
-
-
-		private void _pageRelease()
-		{
-			if (_current.Node.MapPages == null)
-				return;
-			_current.Node.MapPages.ClearActives();
-			var page1 = _current.Node.MapPages.GetItem(QueryPath);
-			if (page1 == null)
-				return;
-			page1.SetActive();
-			_current.Page.PageItem = page1;
-			if (page1.HasMasters)
-				foreach (var item1 in page1.Masters
-					.Reverse())
-					_current.Page.InsertParent(item1.Link);
 		}
 
 	}

@@ -10,6 +10,7 @@ namespace Ans.Net10.Web.TagHelpers
 {
 
 	/*
+	 * <a href-media="https://t.me/new_guap"></a>
 	 * <a href-email="user@host.ru"></a>
 	 * <a href-tel="+7-123-123-12-12"></a>
 	 * <a href-site-res="data/nav.json"></a>
@@ -18,17 +19,15 @@ namespace Ans.Net10.Web.TagHelpers
 	 * <a href-site="sveden/struct"></a>
 	 * <a href-node="docs/forms"></a>
 	 * <a href-page="list"></a>
-	 * 
-	 * <img src-site-res="images/logo1.svg"/>
-	 * <img src-node-res="persons/head.png"/>
-	 * <img src-page-res="img1.jpg"/>
 	 */
 
 
 
+	[HtmlTargetElement("a", Attributes = Href_Media_AttributeName)]
+	[HtmlTargetElement("a", Attributes = MediaVariant_AttributeName)]
 	[HtmlTargetElement("a", Attributes = Href_Email_AttributeName)]
 	[HtmlTargetElement("a", Attributes = Href_Tel_AttributeName)]
-	[HtmlTargetElement("a", Attributes = Code_AttributeName)]
+	[HtmlTargetElement("a", Attributes = TelCode_AttributeName)]
 	[HtmlTargetElement("a", Attributes = Href_Site_Res_AttributeName)]
 	[HtmlTargetElement("a", Attributes = Href_Node_Res_AttributeName)]
 	[HtmlTargetElement("a", Attributes = Href_Page_Res_AttributeName)]
@@ -42,9 +41,12 @@ namespace Ans.Net10.Web.TagHelpers
 		: AnchorTagHelper(generator)
 	{
 
+		private const string Href_Media_AttributeName = "href-media";
+		private const string MediaAutoTitle_AttributeName = "media-auto-title";
+		private const string MediaVariant_AttributeName = "media-variant";
 		private const string Href_Email_AttributeName = "href-email";
 		private const string Href_Tel_AttributeName = "href-tel";
-		private const string Code_AttributeName = "tel-code";
+		private const string TelCode_AttributeName = "tel-code";
 		private const string Href_Site_Res_AttributeName = "href-site-res";
 		private const string Href_Node_Res_AttributeName = "href-node-res";
 		private const string Href_Page_Res_AttributeName = "href-page-res";
@@ -59,6 +61,18 @@ namespace Ans.Net10.Web.TagHelpers
 		/* properties */
 
 
+		[HtmlAttributeName(Href_Media_AttributeName)]
+		public string HrefMediaData { get; set; }
+
+
+		[HtmlAttributeName(MediaAutoTitle_AttributeName)]
+		public bool MediaAutoTitleData { get; set; } = true;
+
+
+		[HtmlAttributeName(MediaVariant_AttributeName)]
+		public int MediaVariantData { get; set; } = 0;
+
+
 		[HtmlAttributeName(Href_Email_AttributeName)]
 		public string HrefEmailData { get; set; }
 
@@ -67,8 +81,8 @@ namespace Ans.Net10.Web.TagHelpers
 		public string HrefTelData { get; set; }
 
 
-		[HtmlAttributeName(Code_AttributeName)]
-		public string CodeData
+		[HtmlAttributeName(TelCode_AttributeName)]
+		public string TelCodeData
 		{
 			get => field ?? _options.DefaultTelCode;
 			set => field = value;
@@ -110,7 +124,10 @@ namespace Ans.Net10.Web.TagHelpers
 			output.TagName = "a";
 			output.TagMode = TagMode.StartTagAndEndTag;
 
-			if (!string.IsNullOrEmpty(HrefEmailData))
+			if (!string.IsNullOrEmpty(HrefMediaData))
+				_makeMedia(output, HrefMediaData);
+
+			else if (!string.IsNullOrEmpty(HrefEmailData))
 				_makeEmail(output, HrefEmailData);
 			else if (!string.IsNullOrEmpty(HrefTelData))
 				_makeTel(output, HrefTelData);
@@ -132,6 +149,34 @@ namespace Ans.Net10.Web.TagHelpers
 
 
 		/* privates */
+
+
+		private void _makeMedia(
+			TagHelperOutput output,
+			string media)
+		{
+			var media1 = _current.App.GetMedia(media);
+			output.Attributes.SetAttribute("target", new HtmlString("_blank"));
+			output.Attributes.SetAttribute("href", new HtmlString(media));
+			var s1 = output.GetChildContent();
+			if (media1 == null)
+			{
+				output.AppendHtml(string.IsNullOrEmpty(s1) ? media : s1);
+				return;
+			}
+			output.AddClass("icon-link", HtmlEncoder.Default);
+			output.AddClass("text-nowrap", HtmlEncoder.Default);
+			output.AppendHtml(media1.Type switch
+			{
+				MediaLinkDefTypeEnum.Icon => $"<i class=\"{media1.Inner}\"></i>",
+				MediaLinkDefTypeEnum.Label => $"<span>{media1.Inner}</span>",
+				_ => $"<img style=\"max-height:1em;\" src=\"{media1.GetVariant(MediaVariantData)}\"/>"
+			});
+			if (!string.IsNullOrEmpty(s1))
+				output.AppendHtml(s1);
+			else if (MediaAutoTitleData)
+				output.AppendHtml(media1.UrlPart);
+		}
 
 
 		private static void _makeEmail(
@@ -168,7 +213,7 @@ namespace Ans.Net10.Web.TagHelpers
 			 * 3122107/1234    -> +7-812-312-21-07 доп. 1234   // с подкодом    
 			 * 3122107w1234    -> +7-812-312-21-07 доп. 1234   // с подкодом    
 			 */
-			var num1 = tel[0] == '+' ? tel : $"{CodeData}{tel}";
+			var num1 = tel[0] == '+' ? tel : $"{TelCodeData}{tel}";
 			var a1 = num1.Split([',', '/', 'w']);
 			var num2 = SuppValues.FixTelephoneRuCityCode(
 				SuppValues.GetDigitalOnly(a1[0]));
@@ -193,8 +238,7 @@ namespace Ans.Net10.Web.TagHelpers
 			TagHelperOutput output,
 			string url1)
 		{
-			var href1 = new HtmlString(url1);
-			output.Attributes.SetAttribute("href", href1);
+			output.Attributes.SetAttribute("href", new HtmlString(url1));
 			output.AppendHtml(output.GetChildContent());
 		}
 
@@ -204,73 +248,6 @@ namespace Ans.Net10.Web.TagHelpers
 			string message)
 		{
 			output.AppendHtml($"<em>{{{message}}}</em>");
-		}
-
-	}
-
-
-
-	[HtmlTargetElement("img", Attributes = Src_Site_Res_AttributeName)]
-	[HtmlTargetElement("img", Attributes = Src_Node_Res_AttributeName)]
-	[HtmlTargetElement("img", Attributes = Src_Page_Res_AttributeName)]
-	public partial class Exts_ImgTagHelper(
-		IConfiguration config,
-		CurrentContext current)
-		: _AnsTagHelper_Base(current)
-	{
-
-		private const string Src_Site_Res_AttributeName = "src-site-res";
-		private const string Src_Node_Res_AttributeName = "src-node-res";
-		private const string Src_Page_Res_AttributeName = "src-page-res";
-
-		private readonly LibWebOptions _options = config.GetLibWebOptions();
-		private readonly CurrentContext _current = current;
-
-
-		/* properties */
-
-
-		[HtmlAttributeName(Src_Site_Res_AttributeName)]
-		public string SrcSiteResData { get; set; }
-
-
-		[HtmlAttributeName(Src_Node_Res_AttributeName)]
-		public string SrcNodeResData { get; set; }
-
-
-		[HtmlAttributeName(Src_Page_Res_AttributeName)]
-		public string SrcPageResData { get; set; }
-
-
-		/* methods */
-
-
-		public override void Process(
-			TagHelperContext context,
-			TagHelperOutput output)
-		{
-			base.Process(context, output);
-			output.TagName = "img";
-			output.TagMode = TagMode.SelfClosing;
-
-			if (!string.IsNullOrEmpty(SrcSiteResData))
-				_makeSrc(output, _current.GetResUrl($"site:{SrcSiteResData}"));
-			else if (!string.IsNullOrEmpty(SrcNodeResData))
-				_makeSrc(output, _current.GetResUrl($"node:{SrcNodeResData}"));
-			else if (!string.IsNullOrEmpty(SrcPageResData))
-				_makeSrc(output, _current.GetResUrl($"page:{SrcPageResData}"));
-		}
-
-
-		/* privates */
-
-
-		private static void _makeSrc(
-			TagHelperOutput output,
-			string url1)
-		{
-			var src1 = new HtmlString(url1);
-			output.Attributes.SetAttribute("src", src1);
 		}
 
 	}

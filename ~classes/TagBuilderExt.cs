@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Html;
+﻿using Ans.Net10.Common;
+using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Text.Encodings.Web;
 
@@ -24,21 +25,29 @@ namespace Ans.Net10.Web
 		/* methods */
 
 
-		public void Prepare(
-			string cssClasses,
+		public void Apply(
+			TagClassesBuilder classes,
+			TagStylesBuilder styles,
+			TagAttributesBuilder attributes)
+		{
+			if (classes.Items.Count > 0)
+				this.ExpandClassAttribute(classes.ToString());
+			if (styles.Items.Count > 0)
+				this.ExpandStyleAttribute(classes.ToString());
+			foreach (var item1 in attributes.Items)
+				MergeAttribute(item1.Key, item1.Value);
+		}
+
+
+		public void Apply(
+			string classes,
 			string styles,
 			string attributes)
 		{
-			if (!string.IsNullOrEmpty(cssClasses))
-				AddCssClass(cssClasses);
-			if (!string.IsNullOrEmpty(styles))
-				this.AddStyle(styles);
-			if (!string.IsNullOrEmpty(attributes))
-				foreach (var item1 in attributes.Split(';'))
-				{
-					var a1 = item1.Split('=');
-					MergeAttribute(a1[0], a1[1]);
-				}
+			var classes1 = new TagClassesBuilder(classes);
+			var styles1 = new TagStylesBuilder(styles);
+			var attributes1 = new TagAttributesBuilder(attributes);
+			Apply(classes1, styles1, attributes1);
 		}
 
 

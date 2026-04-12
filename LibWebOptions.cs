@@ -45,7 +45,12 @@ namespace Ans.Net10.Web
 		public ErrorsOptions Errors { get; set; }
 		public SubnetsOptions Subnets { get; set; }
 		public MailServiceOptions MailService { get; set; }
-		public Dictionary<string, Dictionary<string, string>> Regs { get; set; }
+
+		public Dictionary<string, string> Endpoints { get; set; }
+		public Dictionary<string, string> Dicts { get; set; }
+		public Dictionary<string, string> Addresses { get; set; }
+		public Dictionary<string, string> Medias { get; set; }
+		public Dictionary<string, string> Values { get; set; }
 	}
 
 

@@ -3,7 +3,7 @@
 	Код не предназначен для редактирования и компиляции во время выполнения!
 *@
 @{
-	var parents1 = (Current.IsOn("Page.Title.Parents"))
+    var parents1 = (Current.IsKeyOn("Page.Title.Parents"))
 		? Current.Page.ParentsTitles
 			.Make("<span class=\"d-block opacity-75 fs-6 fw-light\">{0}</span> ")
 		: null;

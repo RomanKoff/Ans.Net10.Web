@@ -10,6 +10,20 @@ namespace Ans.Net10.Web
 		/* methods */
 
 
+		public static void AddValueToAttribute(
+			this TagHelperOutput output,
+			string name,
+			string value,
+			string separator)
+		{
+			if (output.Attributes.ContainsName(name))
+				output.Attributes.SetAttribute(
+					name, $"{output.Attributes[name].Value}{separator}{value}");
+			else
+				output.Attributes.Add(name, value);
+		}
+
+
 		public static void AddAttributeIfPresent(
 			this TagHelperOutput output,
 			string name,

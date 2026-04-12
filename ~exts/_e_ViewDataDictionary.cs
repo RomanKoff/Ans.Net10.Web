@@ -87,6 +87,14 @@ namespace Ans.Net10.Web
 		}
 
 
+		public static T Get<T>(
+			this ViewDataDictionary viewData,
+			string name)
+		{
+			return (T)viewData.Eval(name);
+		}
+
+
 		public static string GetString(
 			this ViewDataDictionary viewData,
 			string name,

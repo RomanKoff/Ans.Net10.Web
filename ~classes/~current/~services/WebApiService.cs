@@ -48,15 +48,15 @@ namespace Ans.Net10.Web
 		}
 
 
-		public T GetFromEndpoint<T>(
-			string endpointName,
-			string queryParams,
-			int slidingExpirationSeconds = 0,
-			int absoluteExpirationRelativeToNowSeconds = 10)
-		{
-			var url1 = $"{_current.GetEndpoint(endpointName)}?{queryParams}";
-			return Get<T>(url1, slidingExpirationSeconds, absoluteExpirationRelativeToNowSeconds);
-		}
+		//public T GetFromEndpoint<T>(
+		//	string endpointName,
+		//	string queryParams,
+		//	int slidingExpirationSeconds = 0,
+		//	int absoluteExpirationRelativeToNowSeconds = 10)
+		//{
+		//	var url1 = $"{_current.GetEndpoint(endpointName)}?{queryParams}";
+		//	return Get<T>(url1, slidingExpirationSeconds, absoluteExpirationRelativeToNowSeconds);
+		//}
 
 	}
 

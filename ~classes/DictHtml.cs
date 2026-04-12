@@ -18,14 +18,21 @@ namespace Ans.Net10.Web
 
 
 		public DictHtml(
-			string serialization)
+			IEnumerable<string> serialization)
 			: base(serialization)
 		{
 		}
 
 
 		public DictHtml(
-			IEnumerable<string> serialization)
+			params string[] serialization)
+			: base(serialization)
+		{
+		}
+
+
+		public DictHtml(
+			string serialization)
 			: base(serialization)
 		{
 		}

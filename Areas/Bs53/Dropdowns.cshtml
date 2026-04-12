@@ -15,7 +15,7 @@
 *@
 @model IMapItem
 @{
-	var css1 = new TagClassBuilder("nav-link dropdown-toggle");
+	var css1 = new TagClassesBuilder("nav-link dropdown-toggle");
 	css1.AppendIf(Model.Link.IsActive || Model.Link.IsSubActive, "active");
 }
 <a class="@css1" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">@Model.ShortTitleHtml</a>

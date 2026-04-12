@@ -74,15 +74,13 @@ namespace Ans.Net10.Web.Forms
 			string attributes = null)
 		{
 			var tag1 = new TagBuilderExt("td", TagRenderMode.Normal);
-			tag1.Prepare(cssClasses, styles, attributes);
+			tag1.Apply(cssClasses, styles, attributes);
 			tag1.InnerHtml.AppendHtml(control);
 			return tag1.ToHtml();
 		}
 
 
-#pragma warning disable CA1822 // Mark members as static
 		public HtmlString AddCell(
-#pragma warning restore CA1822 // Mark members as static
 			IFormCellControl control,
 			string cssClasses = null,
 			string styles = null,

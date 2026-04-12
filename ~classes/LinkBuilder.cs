@@ -21,13 +21,6 @@ namespace Ans.Net10.Web
 		}
 
 
-		//public LinkBuilder(
-		//	string title)
-		//	: this(null, title)
-		//{
-		//}
-
-
 		/* properties */
 
 

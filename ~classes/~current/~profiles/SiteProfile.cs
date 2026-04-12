@@ -71,7 +71,8 @@
 		private MapNodes _getPrepMapNodes()
 		{
 			var map1 = _Current.Maps.GetMapNodes();
-			_prepMapNodes(map1.TopItems);
+			if (map1 != null)
+				_prepMapNodes(map1.TopItems);
 			return map1;
 		}
 

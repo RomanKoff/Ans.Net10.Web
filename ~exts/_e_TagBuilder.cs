@@ -9,14 +9,32 @@ namespace Ans.Net10.Web
 		/* methods */
 
 
-		public static void AddStyle(
+		public static void ExpandAttribute(
+			this TagBuilder tag,
+			string name,
+			string value,
+			string separator)
+		{
+			if (tag.Attributes.TryGetValue(name, out var current1))
+				tag.Attributes[name] = current1 + separator + value;
+			else
+				tag.Attributes[name] = value;
+		}
+
+
+		public static void ExpandClassAttribute(
 			this TagBuilder tag,
 			string value)
 		{
-			if (tag.Attributes.TryGetValue("style", out var currentValue))
-				tag.Attributes["style"] = currentValue + value;
-			else
-				tag.Attributes["style"] = value;
+			tag.ExpandAttribute("class", value, " ");
+		}
+
+
+		public static void ExpandStyleAttribute(
+			this TagBuilder tag,
+			string value)
+		{
+			tag.ExpandAttribute("style", value, ";");
 		}
 
 	}

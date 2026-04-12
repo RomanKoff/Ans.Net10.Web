@@ -17,7 +17,7 @@
 			Value = value;
 			Control = new(Name, Value);
 			Control.AddCssClass("form-control");
-			Control.AddStyle("border:none;");
+			Control.ExpandStyleAttribute("border:none;");
 			if (cssClasses != null)
 				Control.AddCssClass(cssClasses);
 			//Control.MergeAttribute("cols", "");

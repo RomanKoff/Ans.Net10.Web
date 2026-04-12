@@ -39,7 +39,7 @@ else
 	{
 		var title1 = GetTitle(item);
 		var props1 = GetProps(item);
-		var css1 = new TagClassBuilder();
+		var css1 = new TagClassesBuilder();
 		css1.AppendIf(item.IsHidden, "opacity-50");
 		css1.AppendIf(item.Link.IsActive, "bg-warning");
 		css1.AppendIf(item.Link.IsSubActive, "bg-info");

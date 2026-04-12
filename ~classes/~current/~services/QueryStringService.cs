@@ -41,7 +41,7 @@ namespace Ans.Net10.Web
 			var nameDesc1 = $"-{name}";
 			if (useTypograf)
 				innerHtml = SuppTypograph.GetTypografMin(innerHtml);
-			var css1 = new TagClassBuilder("text-nowrap", "sorting");
+			var css1 = new TagClassesBuilder("text-nowrap sorting");
 			string inner1;
 			if (TestValue("order", name))
 			{

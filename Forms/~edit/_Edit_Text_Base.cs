@@ -22,7 +22,7 @@
 			if (cssClasses != null)
 				Control.AddCssClass(cssClasses);
 			if (MaxWidth > 0)
-				Control.AddStyle($"max-width:{MaxWidth}rem;");
+				Control.ExpandStyleAttribute($"max-width:{MaxWidth}rem;");
 		}
 
 

@@ -103,6 +103,8 @@ namespace Ans.Net10.Web
 
 		private MapNodesItem _getParentNode()
 		{
+			if (NodeItem == null)
+				return null;
 			if (!NodeItem.HasMasters)
 				return null;
 			foreach (var item1 in NodeItem.Masters.Reverse())
