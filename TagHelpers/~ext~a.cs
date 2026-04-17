@@ -23,17 +23,17 @@ namespace Ans.Net10.Web.TagHelpers
 
 
 
-	[HtmlTargetElement("a", Attributes = Href_Media_AttributeName)]
+	[HtmlTargetElement("a", Attributes = HrefMedia_AttributeName)]
 	[HtmlTargetElement("a", Attributes = MediaVariant_AttributeName)]
-	[HtmlTargetElement("a", Attributes = Href_Email_AttributeName)]
-	[HtmlTargetElement("a", Attributes = Href_Tel_AttributeName)]
+	[HtmlTargetElement("a", Attributes = HrefEmail_AttributeName)]
+	[HtmlTargetElement("a", Attributes = HrefTel_AttributeName)]
 	[HtmlTargetElement("a", Attributes = TelCode_AttributeName)]
-	[HtmlTargetElement("a", Attributes = Href_Site_Res_AttributeName)]
-	[HtmlTargetElement("a", Attributes = Href_Node_Res_AttributeName)]
-	[HtmlTargetElement("a", Attributes = Href_Page_Res_AttributeName)]
-	[HtmlTargetElement("a", Attributes = Href_Site_AttributeName)]
-	[HtmlTargetElement("a", Attributes = Href_Node_AttributeName)]
-	[HtmlTargetElement("a", Attributes = Href_Page_AttributeName)]
+	[HtmlTargetElement("a", Attributes = HrefSiteRes_AttributeName)]
+	[HtmlTargetElement("a", Attributes = HrefNodeRes_AttributeName)]
+	[HtmlTargetElement("a", Attributes = HrefPageRes_AttributeName)]
+	[HtmlTargetElement("a", Attributes = HrefSite_AttributeName)]
+	[HtmlTargetElement("a", Attributes = HrefNode_AttributeName)]
+	[HtmlTargetElement("a", Attributes = HrefPage_AttributeName)]
 	public partial class Exts_ATagHelper(
 		IConfiguration config,
 		IHtmlGenerator generator,
@@ -41,18 +41,18 @@ namespace Ans.Net10.Web.TagHelpers
 		: AnchorTagHelper(generator)
 	{
 
-		private const string Href_Media_AttributeName = "href-media";
+		private const string HrefMedia_AttributeName = "href-media";
 		private const string MediaAutoTitle_AttributeName = "media-auto-title";
 		private const string MediaVariant_AttributeName = "media-variant";
-		private const string Href_Email_AttributeName = "href-email";
-		private const string Href_Tel_AttributeName = "href-tel";
+		private const string HrefEmail_AttributeName = "href-email";
+		private const string HrefTel_AttributeName = "href-tel";
 		private const string TelCode_AttributeName = "tel-code";
-		private const string Href_Site_Res_AttributeName = "href-site-res";
-		private const string Href_Node_Res_AttributeName = "href-node-res";
-		private const string Href_Page_Res_AttributeName = "href-page-res";
-		private const string Href_Site_AttributeName = "href-site";
-		private const string Href_Node_AttributeName = "href-node";
-		private const string Href_Page_AttributeName = "href-page";
+		private const string HrefSiteRes_AttributeName = "href-site-res";
+		private const string HrefNodeRes_AttributeName = "href-node-res";
+		private const string HrefPageRes_AttributeName = "href-page-res";
+		private const string HrefSite_AttributeName = "href-site";
+		private const string HrefNode_AttributeName = "href-node";
+		private const string HrefPage_AttributeName = "href-page";
 
 		private readonly LibWebOptions _options = config.GetLibWebOptions();
 		private readonly CurrentContext _current = current;
@@ -61,7 +61,7 @@ namespace Ans.Net10.Web.TagHelpers
 		/* properties */
 
 
-		[HtmlAttributeName(Href_Media_AttributeName)]
+		[HtmlAttributeName(HrefMedia_AttributeName)]
 		public string HrefMediaData { get; set; }
 
 
@@ -73,11 +73,11 @@ namespace Ans.Net10.Web.TagHelpers
 		public int MediaVariantData { get; set; } = 0;
 
 
-		[HtmlAttributeName(Href_Email_AttributeName)]
+		[HtmlAttributeName(HrefEmail_AttributeName)]
 		public string HrefEmailData { get; set; }
 
 
-		[HtmlAttributeName(Href_Tel_AttributeName)]
+		[HtmlAttributeName(HrefTel_AttributeName)]
 		public string HrefTelData { get; set; }
 
 
@@ -89,27 +89,27 @@ namespace Ans.Net10.Web.TagHelpers
 		}
 
 
-		[HtmlAttributeName(Href_Site_Res_AttributeName)]
+		[HtmlAttributeName(HrefSiteRes_AttributeName)]
 		public string HrefSiteResData { get; set; }
 
 
-		[HtmlAttributeName(Href_Node_Res_AttributeName)]
+		[HtmlAttributeName(HrefNodeRes_AttributeName)]
 		public string HrefNodeResData { get; set; }
 
 
-		[HtmlAttributeName(Href_Page_Res_AttributeName)]
+		[HtmlAttributeName(HrefPageRes_AttributeName)]
 		public string HrefPageResData { get; set; }
 
 
-		[HtmlAttributeName(Href_Site_AttributeName)]
+		[HtmlAttributeName(HrefSite_AttributeName)]
 		public string HrefSiteData { get; set; }
 
 
-		[HtmlAttributeName(Href_Node_AttributeName)]
+		[HtmlAttributeName(HrefNode_AttributeName)]
 		public string HrefNodeData { get; set; }
 
 
-		[HtmlAttributeName(Href_Page_AttributeName)]
+		[HtmlAttributeName(HrefPage_AttributeName)]
 		public string HrefPageData { get; set; }
 
 

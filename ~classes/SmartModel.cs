@@ -14,8 +14,12 @@ namespace Ans.Net10.Web
 		public SmartModel[] Masters { get; set; }
 		public SmartModel[] Slaves { get; set; }
 		public SmartModel[] Settings { get; set; }
+		public Dictionary<string, SmartModel> Dict { get; set; }
 
 		public DictTagStylers Stylers { get; set; }
+
+		public DictString Values { get; set; } = [];
+		public Dictionary<string, bool> Flags { get; set; } = [];
 
 
 		/* properties */
@@ -85,17 +89,8 @@ namespace Ans.Net10.Web
 		public string Mode { get; set; }
 		public string Type { get; set; }
 		public string Template { get; set; }
-		public string Template1 { get; set; }
-		public string Template2 { get; set; }
-		public string Template3 { get; set; }
 		public string Class { get; set; }
-		public string Class1 { get; set; }
-		public string Class2 { get; set; }
-		public string Class3 { get; set; }
 		public string Style { get; set; }
-		public string Style1 { get; set; }
-		public string Style2 { get; set; }
-		public string Style3 { get; set; }
 
 		public string Properties { get; set; }
 		public string Tags { get; set; }

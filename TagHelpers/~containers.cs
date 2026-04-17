@@ -109,33 +109,4 @@ namespace Ans.Net10.Web.TagHelpers
 		}
 	}
 
-
-
-	/*
-	[HtmlTargetElement("escape-html")]
-	public class EscapeHtmlTagHelper
-		: _TagHelper_Base
-	{
-		private const string Tab_AttributeName = "tab";
-
-		[HtmlAttributeName(Tab_AttributeName)]
-		public string Tab { get; set; } = "    ";
-
-		public override void Process(
-			TagHelperContext context,
-			TagHelperOutput output)
-		{
-			output.TagName = null;
-			var content1 = SuppTypograph.GetHtml2Text(GetContent(output));
-			var lines1 = content1
-				.Split(["\r\n", "\r", "\n"], StringSplitOptions.None)
-				.Select(x => x.ReplaceStart(Tab, "&Tab;"));
-			var sb1 = new StringBuilder();
-			foreach (var line1 in lines1)
-				sb1.AppendLine(line1);
-			output.Content.AppendHtml(sb1.ToString());
-		}
-	}
-	*/
-
 }
