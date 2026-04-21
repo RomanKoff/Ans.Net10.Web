@@ -106,23 +106,23 @@ namespace Ans.Net10.Web
 			ViewEngineResult engine1;
 			if (string.IsNullOrEmpty(path))
 			{
-				// стартовая страница сайта (узел по умолчанию (_main))				
+				// стартовая страница start.cshtml узла по умолчанию _main (стартовая страница сайта)
 				_initPaths(null, "_main/start");
 			}
 			else
 			{
-				var s1 = _fixPath(path);
-				if (s1 != path) // path.EndsWith('/')
+				var path1 = _fixPath(path);
+				if (path1 != path)
 				{
 					// исправление пути запроса
-					return $"{_current.Host.VirtualPath}/{s1}{Params}";
+					return $"{_current.Host.VirtualPath}/{path1}{Params}";
 				}
 
-				//var path1 = path; // path.TrimEnd('/');
 				engine1 = _current.ViewRender.GetViewEngineResult($"Nodes/{path}");
 				if (engine1.View != null)
 				{
-					// обычная страница сайта, узла или каталога
+					// обычная страница сайта
+					// (page1.cshtml, node1/page1.cshtml, node1/path1/page1.cshtml ...)
 					_initPaths(null, path);
 				}
 				else
@@ -132,6 +132,7 @@ namespace Ans.Net10.Web
 					if (engine1.View != null)
 					{
 						// стартовая страница узла или каталога
+						// (node1/start.cshtml, node1/path1/start.cshtml)
 						_initPaths(path, view1);
 					}
 					else
@@ -140,7 +141,8 @@ namespace Ans.Net10.Web
 						engine1 = _current.ViewRender.GetViewEngineResult($"Nodes/{view2}");
 						if (engine1.View != null)
 						{
-							// обычная страница узла по умолчанию (_main)
+							// обычная страница узла по умолчанию _main
+							// (_main/page1.cshtml, _main/path1/page1.cshtml)
 							_initPaths(path, view2);
 						}
 						else
@@ -149,7 +151,8 @@ namespace Ans.Net10.Web
 							engine1 = _current.ViewRender.GetViewEngineResult($"Nodes/{view3}");
 							if (engine1.View != null)
 							{
-								// стартовая страница каталога узла по умолчанию (_main)
+								// стартовая страница каталога узла по умолчанию
+								// (_main/start.cshtml)
 								_initPaths(path, view3);
 							}
 							else
@@ -158,8 +161,8 @@ namespace Ans.Net10.Web
 					}
 				}
 			}
-			NodeRelease();
-			PageRelease();
+			_nodeRelease();
+			_pageRelease();
 			IsStartSite = string.IsNullOrEmpty(RelativeUrl);
 			IsStartNode = RelativeUrl == _current.Node.Url;
 			IsStartPage = ViewPath.EndsWith("/start");
@@ -167,10 +170,10 @@ namespace Ans.Net10.Web
 		}
 
 
-		/* methods */
+		/* privates */
 
 
-		public void NodeRelease()
+		private void _nodeRelease()
 		{
 			if (_current.Site.MapNodes == null)
 				return;
@@ -188,7 +191,7 @@ namespace Ans.Net10.Web
 		}
 
 
-		public void PageRelease()
+		private void _pageRelease()
 		{
 			if (_current.Node.MapPages == null)
 				return;
@@ -203,9 +206,6 @@ namespace Ans.Net10.Web
 					.Reverse())
 					_current.Page.InsertParent(item1.Link);
 		}
-
-
-		/* privates */
 
 
 		private static string _fixPath(

@@ -27,9 +27,7 @@ namespace Ans.Net10.Web
 
 		public MapPages GetMapPages(
 			string node)
-		{
-			//if (string.IsNullOrEmpty(node))
-			//	return null;
+		{	
 			var map1 = _mapPagesProvider.GetMapPages(
 				node, _current.Host.VirtualPath);
 			return map1;

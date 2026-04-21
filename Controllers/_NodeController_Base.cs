@@ -14,12 +14,12 @@ namespace Ans.Net10.Web.Controllers
 		public virtual IActionResult Page(
 			string path)
 		{
-			var s1 = current.Request.NodesParsePath(path);
-			return s1 switch
+			var path1 = current.Request.NodesParsePath(path);
+			return path1 switch
 			{
 				null => NotFound(),
 				"" => View($"/Views/Nodes{current.Request.ViewPath}.cshtml"),
-				_ => Redirect(s1)
+				_ => Redirect(path1)
 			};
 		}
 

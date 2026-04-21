@@ -1,11 +1,13 @@
 ﻿using Ans.Net10.Common;
 using Ans.Net10.Common.Services;
 using Ans.Net10.Web.Services;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using System.Globalization;
 using System.Net;
 
@@ -26,6 +28,7 @@ namespace Ans.Net10.Web
 
 
 		public CurrentContext(
+			IWebHostEnvironment env,
 			IConfiguration configuration,
 			IHttpContextAccessor httpContextAccessor,
 			IHttpClientFactory httpClientFactory,
@@ -36,6 +39,7 @@ namespace Ans.Net10.Web
 			IMapNodesProvider mapNodesProvider,
 			IMapPagesProvider mapPagesProvider)
 		{
+			Env = env;
 			Configuration = configuration;
 			HttpContext = httpContextAccessor.HttpContext;
 			HttpClientFactory = httpClientFactory;
@@ -71,6 +75,7 @@ namespace Ans.Net10.Web
 		/* readonly properties */
 
 
+		public IWebHostEnvironment Env { get; }
 		public IConfiguration Configuration { get; }
 		public HttpContext HttpContext { get; }
 		public IHttpClientFactory HttpClientFactory { get; }
@@ -159,6 +164,10 @@ namespace Ans.Net10.Web
 
 
 		/* functions */
+
+
+		public bool IsDevelopment
+			=> Env.IsDevelopment();
 
 
 		/// <summary>

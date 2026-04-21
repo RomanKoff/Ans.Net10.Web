@@ -59,7 +59,7 @@ namespace Ans.Net10.Web.Services
 			{
 				throw new Exception("[Ans.Net10.Web] MapPages compile error.");
 			}
-			_maps[node1] = map2; // _maps.Add(node1, map2);
+			_maps[node1] = map2;
 			return map2;
 		}
 
@@ -81,7 +81,6 @@ namespace Ans.Net10.Web.Services
 		private static string _getNodeName(
 			string name)
 		{
-			//return name;
 			return string.IsNullOrEmpty(name)
 				? "_main" : name;
 		}
