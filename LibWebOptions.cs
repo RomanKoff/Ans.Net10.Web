@@ -20,37 +20,34 @@ namespace Ans.Net10.Web
 	public class LibWebOptions
 		: _AppSettingsOptions_Proto
 	{
+
 		public override void Test()
 		{
 			if (DefaultLayout == null)
 				throw GetExceptionParamRequired(nameof(DefaultLayout));
-			if (SystemToken == null)
-				throw GetExceptionParamRequired(nameof(SystemToken));
 		}
 
-		public string DefaultLayout { get; set; } // Required!
-		public string SystemToken { get; set; } // Required!
+
+		public string DefaultLayout { get; set; } // Required!		
+		public string DefaultContainerClasses { get; set; } = "container";
 
 		public string Culture { get; set; } = "ru";
-		public string DefaultTelCode { get; set; } = "+7-812";
-		public string DefaultCssContainer { get; set; } = "container";
 		public string SystemLayout { get; set; }
-		public string CorsProfile { get; set; }
-		public bool UseDeveloperMode { get; set; } = false;
+		public string SystemToken { get; set; }
 		public bool UseRuntimeCompilation { get; set; } = false;
+		public bool UseDeveloperMode { get; set; } = false;
 		public bool UseSessions { get; set; } = false;
+
+		public string CorsProfile { get; set; }
+
 		public string[] Swagger { get; set; }
 		public string[] Mimetypes { get; set; }
 		public string[] Routes { get; set; }
-		public ErrorsOptions Errors { get; set; }
-		public SubnetsOptions Subnets { get; set; }
-		public MailServiceOptions MailService { get; set; }
 
-		public Dictionary<string, string> Endpoints { get; set; }
-		public Dictionary<string, string> Dicts { get; set; }
-		public Dictionary<string, string> Addresses { get; set; }
-		public Dictionary<string, string> Medias { get; set; }
-		public Dictionary<string, string> Values { get; set; }
+		public ErrorsOptions Errors { get; set; }
+		public MailServiceOptions MailService { get; set; }
+		public SubnetsOptions Subnets { get; set; }
+
 	}
 
 
@@ -65,6 +62,21 @@ namespace Ans.Net10.Web
 		public string Picture403 { get; set; }
 		public string Picture404 { get; set; }
 		public string Picture500 { get; set; }
+	}
+
+
+
+	public class MailServiceOptions
+		: IMailerServiceOptions
+	{
+		public string SmtpServer { get; set; }
+		public int SmtpPort { get; set; }
+		public bool SmtpUseSsl { get; set; }
+		public string SmtpUsername { get; set; }
+		public string SmtpPassword { get; set; }
+		public string DefaultFromAddress { get; set; }
+		public string DefaultFromTitle { get; set; }
+		public string DebugCc { get; set; }
 	}
 
 
@@ -111,21 +123,7 @@ namespace Ans.Net10.Web
 			return (string.IsNullOrEmpty(Deny))
 				? null : _denySubnets ??= new IPSubnetsList(Deny);
 		}
-	}
 
-
-
-	public class MailServiceOptions
-		: IMailerServiceOptions
-	{
-		public string SmtpServer { get; set; }
-		public int SmtpPort { get; set; }
-		public bool SmtpUseSsl { get; set; }
-		public string SmtpUsername { get; set; }
-		public string SmtpPassword { get; set; }
-		public string DefaultFromAddress { get; set; }
-		public string DefaultFromTitle { get; set; }
-		public string DebugCc { get; set; }
 	}
 
 }

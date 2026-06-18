@@ -21,24 +21,11 @@ namespace Ans.Net10.Web.Services
 	public interface IViewRenderService
 	{
 		ActionContext GetActionContext();
-
-		ViewEngineResult GetViewEngineResult(
-			ActionContext actionContext,
-			string viewName);
-
-		ViewEngineResult GetViewEngineResult(
-			string viewName);
-
-		ViewEngineResult GetPartialEngineResult(
-			string viewName);
-
-		Task<string> RenderViewToStringAsync(
-			string viewName,
-			object model);
-
-		Task<string> RenderPartialToStringAsync(
-			string viewName,
-			object model);
+		ViewEngineResult GetViewEngineResult(ActionContext actionContext, string viewName);
+		ViewEngineResult GetViewEngineResult(string viewName);
+		ViewEngineResult GetPartialEngineResult(string viewName);
+		Task<string> RenderViewToStringAsync(string viewName, object model);
+		Task<string> RenderPartialToStringAsync(string viewName, object model);
 	}
 
 
@@ -100,7 +87,7 @@ namespace Ans.Net10.Web.Services
 			var result1 = GetViewEngineResult(action1, viewName);
 			if (result1.View == null)
 				throw new ArgumentNullException(
-					$"{viewName} does not match any available view");
+					$"[Ans.Net10.Web] \"{viewName}\" does not match any available view");
 			return await _renderAsync(result1, model);
 		}
 
@@ -112,7 +99,7 @@ namespace Ans.Net10.Web.Services
 			var result1 = GetPartialEngineResult(viewName);
 			if (result1.View == null)
 				throw new ArgumentNullException(
-					$"{viewName} does not match any available partial");
+					$"[Ans.Net10.Web] \"{viewName}\" does not match any available partial");
 			return await _renderAsync(result1, model);
 		}
 
@@ -128,12 +115,17 @@ namespace Ans.Net10.Web.Services
 			var dictionary1 = new ViewDataDictionary(
 				new EmptyModelMetadataProvider(),
 				new ModelStateDictionary())
-			{ Model = model };
+			{
+				Model = model
+			};
 			using var writer1 = new StringWriter();
 			var view1 = new ViewContext(
-				action1, result.View, dictionary1,
+				action1,
+				result.View,
+				dictionary1,
 				new TempDataDictionary(action1.HttpContext, _tempDataProvider),
-				writer1, new HtmlHelperOptions());
+				writer1,
+				new HtmlHelperOptions());
 			await result.View.RenderAsync(view1);
 			return writer1.ToString();
 		}

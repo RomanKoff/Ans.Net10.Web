@@ -27,59 +27,19 @@ namespace Ans.Net10.Web
 			IConfiguration configuration)
 		{
 			Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-
 			var options1 = configuration.GetLibWebOptions();
+
 
 			var culture1 = new CultureInfo(options1.Culture);
 			CultureInfo.DefaultThreadCurrentCulture = culture1;
 			CultureInfo.DefaultThreadCurrentUICulture = culture1;
 
-			// IServiceCollection (singleton)
 
-			builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-			if (options1.MailService != null)
-				builder.Services.AddSingleton<IMailerService, AnsMailerService>(
-					x => new(options1.MailService));
-			builder.Services.AddSingleton<IMapNodesProvider, MapNodesProvider_Xml>();
-			builder.Services.AddSingleton<IMapPagesProvider, MapPagesProvider_Xml>();
+			/*
+			 * Swagger
+			 * (если при запросе SwaggerUI отображается ошибка, необходимо обновить кеш браузера)
+			 */
 
-			if (options1.MailService == null)
-				builder.Services.AddSingleton<IMailerService, FakeMailerService>();
-			else
-				builder.Services.AddSingleton<IMailerService, AnsMailerService>(
-					x => new(options1.MailService));
-
-			// IServiceCollection (scoped)
-
-			//builder.Services.AddScoped(
-			//	x => x.GetRequiredService<IUrlHelperFactory>().GetUrlHelper(
-			//		x.GetRequiredService<IHttpContextAccessor>().HttpContext));
-			builder.Services.AddScoped<IViewRenderService, AnsViewRenderService>();
-			builder.Services.AddScoped<CurrentContext>();
-
-			// IServiceCollection
-
-			builder.Services.AddResponseCaching();
-			builder.Services.AddHttpContextAccessor();
-			builder.Services.AddHttpClient();
-
-			builder.Services.AddCors(o =>
-			{
-				o.AddPolicy(_Consts.CORS_ALLOW_ALL, p =>
-				{
-					p.AllowAnyOrigin();
-					p.AllowAnyHeader();
-					p.AllowAnyMethod();
-				});
-			});
-
-			if (options1.UseSessions)
-			{
-				builder.Services.AddDistributedMemoryCache();
-				builder.Services.AddSession();
-			}
-
-			// Swagger
 			if (options1.Swagger?.Length > 0)
 			{
 				builder.Services.AddEndpointsApiExplorer();
@@ -97,7 +57,58 @@ namespace Ans.Net10.Web
 				});
 			}
 
-			// IMvcBuilder
+
+			/*
+			 * singleton
+			 */
+
+			builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+			if (options1.MailService == null)
+				builder.Services.AddSingleton<IMailerService, FakeMailerService>();
+			else
+				builder.Services.AddSingleton<IMailerService, AnsMailerService>(
+					x => new(options1.MailService));
+
+			builder.Services.AddSingleton<SitemapProvider>();
+
+
+			/*
+			 * scoped
+			 */
+
+			builder.Services.AddScoped<IViewRenderService, AnsViewRenderService>();
+			builder.Services.AddScoped<CurrentContext>();
+
+
+			/*
+			 * Commons
+			 */
+
+			builder.Services.AddResponseCaching();
+			builder.Services.AddHttpContextAccessor();
+			builder.Services.AddHttpClient();
+
+			if (options1.UseSessions)
+			{
+				builder.Services.AddDistributedMemoryCache();
+				builder.Services.AddSession();
+			}
+
+			builder.Services.AddCors(o =>
+			{
+				o.AddPolicy(_Consts.CORS_ALLOW_ALL, p =>
+				{
+					p.AllowAnyOrigin();
+					p.AllowAnyHeader();
+					p.AllowAnyMethod();
+				});
+			});
+
+
+			/*
+			 * IMvcBuilder
+			 */
 
 			var mvc1 = builder.Services.AddMvc(o =>
 			{
@@ -131,7 +142,12 @@ namespace Ans.Net10.Web
 		{
 			var options1 = configuration.GetLibWebOptions();
 
-			// Swagger
+
+			/*
+			 * Swagger
+			 * (если при запросе SwaggerUI отображается ошибка, необходимо обновить кеш браузера)
+			 */
+
 			if (options1.Swagger?.Length > 0)
 			{
 				app.UseSwagger();
@@ -148,8 +164,34 @@ namespace Ans.Net10.Web
 						Swashbuckle.AspNetCore.SwaggerUI.ModelRendering.Model);
 					o.DefaultModelsExpandDepth(5);
 					o.DefaultModelExpandDepth(5);
-				}); // use reset browser cache
+				});
 			}
+
+
+			/*
+			 * Sitemap
+			 */
+
+			var sitemap1 = app.Services.GetService<SitemapProvider>();
+			var node1 = new MapNodesItem("ans", "Ans", null);
+			node1.TreePages.AppendChilds(
+				new MapPagesItem("errors", "Errors", null,
+					new MapPagesItem("httperrors", "Http Errors", null)));
+			sitemap1.TreeNodes.AppendChild(node1);
+
+
+			/*
+			 * Commons
+			 */
+
+			app.UseHttpsRedirection();
+			app.UseResponseCaching();
+			app.UseRouting();
+			app.MapRazorPages();
+			app.MapControllers();
+
+			if (!app.Environment.IsDevelopment())
+				app.UseHsts();
 
 			if (options1.UseDeveloperMode)
 			{
@@ -162,12 +204,8 @@ namespace Ans.Net10.Web
 				var path2 = options1.Errors?.HttpErrorPath ?? "/Ans/Errors/HttpErrors";
 				app.UseExceptionHandler(path1);
 				app.UseStatusCodePagesWithReExecute(path2, "?code={0}");
+				app.UseMiddleware<AnsHttpExceptionHandler>();
 			}
-
-			if (!app.Environment.IsDevelopment())
-				app.UseHsts();
-
-			app.UseHttpsRedirection();
 
 			if (options1.Mimetypes?.Length > 0)
 			{
@@ -187,24 +225,13 @@ namespace Ans.Net10.Web
 				app.UseStaticFiles();
 			}
 
-			app.UseResponseCaching();
-
 			if (options1.UseSessions)
 				app.UseSession();
 
-			app.UseRouting();
-
-			app.UseCors(
-				options1.CorsProfile ?? _Consts.CORS_ALLOW_ALL);
-
-			app.MapRazorPages();
-
-			app.MapControllers();
+			app.UseCors(options1.CorsProfile ?? _Consts.CORS_ALLOW_ALL);
 
 			if (options1.Routes?.Length > 0)
 				app.AddRoutes(options1.Routes);
-
-			app.UseMiddleware<AnsHttpExceptionHandler>();
 		}
 
 	}

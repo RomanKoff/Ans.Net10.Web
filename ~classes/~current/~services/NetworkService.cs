@@ -15,19 +15,18 @@ namespace Ans.Net10.Web
 		{
 			RemoteIpAddress = current.HttpContext.Connection.RemoteIpAddress;
 			var _subnets1 = current.Options.Subnets;
-			if (_subnets1 != null)
-			{
-				AdminSubnets = _subnets1.GetAdminSubnets();
-				SafeSubnets = _subnets1.GetSafeSubnets();
-				UnsafeSubnets = _subnets1.GetUnsafeSubnets();
-				AllowSubnets = _subnets1.GetAllowSubnets();
-				DenySubnets = _subnets1.GetDenySubnets();
-				IsAdmin = AdminSubnets != null && IsRelate(AdminSubnets);
-				IsSafe = SafeSubnets != null && IsRelate(SafeSubnets);
-				IsUnsafe = UnsafeSubnets != null && IsRelate(UnsafeSubnets);
-				IsAllow = AllowSubnets != null && IsRelate(AllowSubnets);
-				IsDeny = DenySubnets != null && IsRelate(DenySubnets);
-			}
+			if (_subnets1 == null)
+				return;
+			AdminSubnets = _subnets1.GetAdminSubnets();
+			SafeSubnets = _subnets1.GetSafeSubnets();
+			UnsafeSubnets = _subnets1.GetUnsafeSubnets();
+			AllowSubnets = _subnets1.GetAllowSubnets();
+			DenySubnets = _subnets1.GetDenySubnets();
+			IsAdmin = AdminSubnets != null && IsRelate(AdminSubnets);
+			IsSafe = SafeSubnets != null && IsRelate(SafeSubnets);
+			IsUnsafe = UnsafeSubnets != null && IsRelate(UnsafeSubnets);
+			IsAllow = AllowSubnets != null && IsRelate(AllowSubnets);
+			IsDeny = DenySubnets != null && IsRelate(DenySubnets);
 		}
 
 

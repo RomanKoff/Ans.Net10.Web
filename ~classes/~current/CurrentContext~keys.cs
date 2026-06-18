@@ -14,39 +14,6 @@ namespace Ans.Net10.Web
 
 
 		/// <summary>
-		/// Устанавливает для ключа значение 'on'
-		/// </summary>
-		public void SetKeyOn(
-			string key)
-		{
-			HttpContext.Items.Add(
-				_getValueKeyOn(key), "on");
-		}
-
-
-		/// <summary>
-		/// Устанавливает для ключа значение 'off'
-		/// </summary>
-		public void SetKeyOff(
-			string key)
-		{
-			HttpContext.Items.Add(
-				_getValueKeyOff(key), "off");
-		}
-
-
-		/// <summary>
-		/// Устанавливает для ключа значение IHtmlContent
-		/// </summary>
-		public void SetKey(
-			string key,
-			Func<dynamic, IHtmlContent> value)
-		{
-			HttpContext.Items[key] = HttpContext.GetStringFromRazor(value);
-		}
-
-
-		/// <summary>
 		/// Устанавливает для ключа значение string
 		/// </summary>
 		public void SetKey(
@@ -112,6 +79,37 @@ namespace Ans.Net10.Web
 		}
 
 
+		/// <summary>
+		/// Устанавливает для ключа значение IHtmlContent
+		/// </summary>
+		public void SetKey(
+			string key,
+			Func<dynamic, IHtmlContent> value)
+		{
+			HttpContext.Items[key] = HttpContext.GetStringFromRazor(value);
+		}
+
+
+		/// <summary>
+		/// Устанавливает для ключа значение 'on'
+		/// </summary>
+		public void SetKeyOn(
+			string key)
+		{
+			SetKey(key, "on");
+		}
+
+
+		/// <summary>
+		/// Устанавливает для ключа значение 'off'
+		/// </summary>
+		public void SetKeyOff(
+			string key)
+		{
+			SetKey(key, "off");
+		}
+
+
 		/* functions */
 
 
@@ -121,8 +119,7 @@ namespace Ans.Net10.Web
 		public bool IsKeyOn(
 			string key)
 		{
-			return HttpContext.Items.ContainsKey(
-				_getValueKeyOn(key));
+			return HttpContext.Items[key] is string value1 && value1.Equals("on");
 		}
 
 
@@ -132,8 +129,7 @@ namespace Ans.Net10.Web
 		public bool IsKeyNotOff(
 			string key)
 		{
-			return !HttpContext.Items.ContainsKey(
-				_getValueKeyOff(key));
+			return HttpContext.Items[key] is string value1 && !value1.Equals("off");
 		}
 
 
@@ -143,8 +139,10 @@ namespace Ans.Net10.Web
 		public bool HasAnyKey(
 			params string[] keys)
 		{
-			foreach (var key1 in keys)
-				if (HttpContext.Items.ContainsKey(key1))
+			if (keys == null || keys.Length == 0)
+				return false;
+			for (int i1 = 0; i1 < keys.Length; i1++)
+				if (HttpContext.Items.ContainsKey(keys[i1]))
 					return true;
 			return false;
 		}
@@ -156,8 +154,10 @@ namespace Ans.Net10.Web
 		public bool HasAllKeys(
 			params string[] keys)
 		{
-			foreach (var key1 in keys)
-				if (!HttpContext.Items.ContainsKey(key1))
+			if (keys == null || keys.Length == 0)
+				return false;
+			for (int i1 = 0; i1 < keys.Length; i1++)
+				if (HttpContext.Items.ContainsKey(keys[i1]))
 					return false;
 			return true;
 		}
@@ -170,7 +170,9 @@ namespace Ans.Net10.Web
 			string key,
 			string defaultValue = null)
 		{
-			return (string)HttpContext.Items[key] ?? defaultValue;
+			return HttpContext.Items[key] is string value1
+				? value1
+				: defaultValue;
 		}
 
 
@@ -181,8 +183,9 @@ namespace Ans.Net10.Web
 			string key,
 			int defaultValue = 0)
 		{
-			var value1 = HttpContext.Items[key];
-			return value1 == null ? defaultValue : (int)value1;
+			return HttpContext.Items[key] is int value1
+				? value1
+				: defaultValue;
 		}
 
 
@@ -192,8 +195,7 @@ namespace Ans.Net10.Web
 		public bool GetKeyBool(
 			string key)
 		{
-			var value1 = HttpContext.Items[key];
-			return value1 != null && (bool)value1;
+			return HttpContext.Items[key] is bool value1 && value1;
 		}
 
 
@@ -204,7 +206,9 @@ namespace Ans.Net10.Web
 			string key,
 			DateTime? defaultValue = null)
 		{
-			return (DateTime?)HttpContext.Items[key] ?? defaultValue;
+			return HttpContext.Items[key] is DateTime value1
+				? value1
+				: defaultValue;
 		}
 
 
@@ -215,7 +219,9 @@ namespace Ans.Net10.Web
 			string key,
 			DateOnly? defaultValue = null)
 		{
-			return (DateOnly?)HttpContext.Items[key] ?? defaultValue;
+			return HttpContext.Items[key] is DateOnly value1
+				? value1
+				: defaultValue;
 		}
 
 
@@ -226,24 +232,9 @@ namespace Ans.Net10.Web
 			string key,
 			TimeOnly? defaultValue = null)
 		{
-			return (TimeOnly?)HttpContext.Items[key] ?? defaultValue;
-		}
-
-
-		/* privates */
-
-
-		private static string _getValueKeyOn(
-			string key)
-		{
-			return $"{key}_on";
-		}
-
-
-		private static string _getValueKeyOff(
-			string key)
-		{
-			return $"{key}_off";
+			return HttpContext.Items[key] is TimeOnly value1
+				? value1
+				: defaultValue;
 		}
 
 	}

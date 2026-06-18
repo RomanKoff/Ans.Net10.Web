@@ -14,9 +14,17 @@ namespace Ans.Net10.Web
 
 	public class MediaLink
 	{
+
+		/* properties */
+
+
 		public string UrlPart { get; set; }
 		public MediaLinkDefTypeEnum Type { get; set; }
 		public string Inner { get; set; }
+
+
+		/* functions */
+
 
 		public string GetVariant(int variant = 0)
 		{
@@ -26,12 +34,17 @@ namespace Ans.Net10.Web
 			var s1 = a1[0].GetCropLeft('/');
 			return $"{s1}/{a1[variant]}";
 		}
+
 	}
 
 
 
 	public class MediaLinkDef
 	{
+
+		/* ctor */
+
+
 		/// <param name="def">
 		/// "icon-class",
 		/// "img=img-url|variant1|variant2...",
@@ -44,21 +57,25 @@ namespace Ans.Net10.Web
 			{
 				Type = MediaLinkDefTypeEnum.Image;
 				Inner = def[4..];
+				return;
 			}
-			else if (def.StartsWith("label="))
+			if (def.StartsWith("label="))
 			{
 				Type = MediaLinkDefTypeEnum.Label;
 				Inner = def[6..];
+				return;
 			}
-			else
-			{
-				Type = MediaLinkDefTypeEnum.Icon;
-				Inner = def;
-			}
+			Type = MediaLinkDefTypeEnum.Icon;
+			Inner = def;
 		}
+
+
+		/* readonly properties */
+
 
 		public MediaLinkDefTypeEnum Type { get; }
 		public string Inner { get; }
+
 	}
 
 }

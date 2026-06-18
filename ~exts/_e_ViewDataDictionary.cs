@@ -104,15 +104,6 @@ namespace Ans.Net10.Web
 		}
 
 
-		//public static HtmlString GetHtml(
-		//	this ViewDataDictionary viewData,
-		//	string name,
-		//	HtmlString defaultValue = null)
-		//{
-		//	return (HtmlString)viewData.Eval(name) ?? defaultValue;
-		//}
-
-
 		// int
 
 

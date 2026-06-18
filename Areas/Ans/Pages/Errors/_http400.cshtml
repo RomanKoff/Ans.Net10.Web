@@ -4,7 +4,6 @@
 *@
 @model Ans.Net10.Web.Areas.Ans.Pages.Errors.HttpErrorsModel
 @{
-	Current.Page.Title = $"{Ans.Net10.Web.Resources.Errors.Text_Error} {Model.HttpCode}!";
-	Current.Page.AddParent(null, Ans.Net10.Web.Resources.Errors.Text_Error);
+    Current.Page.Title = $"{Ans.Net10.Web.Resources.Errors.Text_Error} {Model.HttpCode}!";
 }
 <partial name="_picture" model="Current.Options.Errors?.Picture400" />

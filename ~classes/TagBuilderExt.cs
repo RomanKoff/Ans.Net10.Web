@@ -56,7 +56,7 @@ namespace Ans.Net10.Web
 
 		public override string ToString()
 		{
-			var sw1 = new StringWriter();
+			using var sw1 = new StringWriter();
 			WriteTo(sw1, HtmlEncoder.Default);
 			return sw1.ToString();
 		}

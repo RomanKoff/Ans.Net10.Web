@@ -6,7 +6,6 @@
 		: _TagHelper_Base
 	{
 		public readonly CurrentContext Current = current;
-		public readonly LibWebOptions Options = current.Options;
 	}
 
 }

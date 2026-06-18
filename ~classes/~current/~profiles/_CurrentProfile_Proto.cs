@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Html;
-using Microsoft.AspNetCore.Mvc;
+﻿using Ans.Net10.Common;
+using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Routing;
 
 namespace Ans.Net10.Web
@@ -16,16 +16,15 @@ namespace Ans.Net10.Web
 
 
 		public abstract string ContainerClasses { get; set; }
+		public abstract string Url { get; }
 		public abstract string ResUrl { get; set; }
 
-		public abstract string Url { get; }
 
-
-		/* virtuals */
+		/* properties */
 
 
 		private string _title;
-		public virtual string Title
+		public string Title
 		{
 			get => _title;
 			set
@@ -39,7 +38,7 @@ namespace Ans.Net10.Web
 
 
 		private string _shortTitle;
-		public virtual string ShortTitle
+		public string ShortTitle
 		{
 			get => _shortTitle ?? Title;
 			set
@@ -53,9 +52,6 @@ namespace Ans.Net10.Web
 		/* readonly properties */
 
 
-		public List<LinkBuilder> ParentsLinks { get; } = [];
-
-
 		private HtmlString _titleHtml;
 		public HtmlString TitleHtml
 			=> _titleHtml ??= Title.ToHtml(true);
@@ -66,14 +62,20 @@ namespace Ans.Net10.Web
 			=> _shortTitleHtml ??= ShortTitle.ToHtml(true);
 
 
-
 		public bool IsShortTitleUnique
 			=> _shortTitle != null && _shortTitle != _title;
 
 
+		public List<LinkBuilder> ParentsLinks { get; } = [];
+
+
+		public string ParentsTitles
+			=> field ??= _getParentsTitles();
+
+
 		public bool HasParents
 			=> ParentsLinks.Count > 0;
-
+		
 
 		/* methods */
 
@@ -162,10 +164,17 @@ namespace Ans.Net10.Web
 			object routes,
 			string title)
 		{
-			//var url1 = _Current.UrlHelper.Action(action, controller, routes);
 			var url1 = _Current.LinkGenerator.GetPathByAction(action, controller, routes);
 			var link1 = new LinkBuilder(url1, title);
 			return link1;
+		}
+
+
+		private string _getParentsTitles()
+		{
+			return ParentsLinks?.MakeFromCollection(
+				x => x.InnerHtml, null, null, ". ")
+				.GetTypografMin();
 		}
 
 	}

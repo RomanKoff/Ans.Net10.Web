@@ -8,47 +8,18 @@ namespace Ans.Net10.Web
 		: _CurrentProfile_Proto(current)
 	{
 
-		/* properties */
-
-
-		public MapPagesItem PageItem { get; set; }
+		/* overrides */
 
 
 		public override string ContainerClasses
 		{
 			get => field ?? _Current.Node.ContainerClasses;
-			set => field = value;
+			set;
 		}
 
 
-		public override string Title
-		{
-			get => base.Title ?? PageItem?.Title;
-			set => base.Title = value;
-		}
-
-
-		public override string ShortTitle
-		{
-			get => IsShortTitleUnique
-				? base.ShortTitle
-				: base.Title ?? PageItem?.ShortTitle;
-			set => base.ShortTitle = value;
-		}
-
-
-		public string CustomBrowserTitle { get; set; }
-
-
-		public string ResPath
-		{
-			get => field ??= _Current.Request.PagePath;
-			set
-			{
-				field = value;
-				_resUrl = null;
-			}
-		}
+		public override string Url
+			=> "! TODO !"; // $"{_Current.Node.Url}{PagemapItem?.Path?.Make("/{0}")}";
 
 
 		private string _resUrl;
@@ -59,30 +30,21 @@ namespace Ans.Net10.Web
 		}
 
 
-		/* readonly properties */
+		/* properties */
 
 
-		public override string Url
-			=> $"{_Current.Node.Url}{_Current.Request.PagePath.Make("/{0}")}";
-
-
-		public string ParentsTitles
-			=> field ??= _getParentsTitles();
-
-
-		public bool HasSlaves
-			=> PageItem?.HasSlaves ?? false;
-
-
-		/* privates */
-
-
-		private string _getParentsTitles()
+		public string ResPath
 		{
-			return ParentsLinks?.MakeFromCollection(
-				x => x.InnerHtml, null, null, ". ")
-				.GetTypografMin();
+			get => field ??= "! TODO !"; // _Current.Request.PagePath;
+			set
+			{
+				field = value;
+				_resUrl = null;
+			}
 		}
+
+
+		public string CustomBrowserTitle { get; set; }
 
 	}
 

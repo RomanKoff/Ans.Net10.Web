@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Logging;
+using System.Diagnostics;
 
 namespace Ans.Net10.Web.Areas.Ans.Pages.Errors
 {
@@ -6,7 +7,7 @@ namespace Ans.Net10.Web.Areas.Ans.Pages.Errors
 	public class HttpErrorsModel(
 		ILogger<HttpErrorsModel> logger,
 		CurrentContext current)
-		: AnsErrorPageModel(current)
+		: AnsPageErrorModel(current)
 	{
 
 		public void OnGet(
@@ -17,6 +18,7 @@ namespace Ans.Net10.Web.Areas.Ans.Pages.Errors
 			logger.LogError(
 				"http-{HttpCode} | {OriginalPath} | {RefererUri} | {RequestId} | {ExceptionMessage}",
 				HttpCode, OriginalPath, RefererUri, RequestId, ExceptionMessage);
+			Debug.WriteLine($"[Ans.Net10.Web] HttpErrors : {HttpCode}");
 		}
 
 	}

@@ -8,44 +8,18 @@ namespace Ans.Net10.Web
 		: _CurrentProfile_Proto(current)
 	{
 
-		/* properties */
-
-
-		public MapNodesItem NodeItem { get; set; }
+		/* overrides */
 
 
 		public override string ContainerClasses
 		{
 			get => field ?? _Current.Site.ContainerClasses;
-			set => field = value;
+			set;
 		}
 
 
-		public override string Title
-		{
-			get => base.Title ?? NodeItem?.Title;
-			set => base.Title = value;
-		}
-
-
-		public override string ShortTitle
-		{
-			get => IsShortTitleUnique
-				? base.ShortTitle
-				: NodeItem?.ShortTitle;
-			set => base.ShortTitle = value;
-		}
-
-
-		public string ResPath
-		{
-			get => field ??= _Current.Request.NodeName;
-			set
-			{
-				field = value;
-				_resUrl = null;
-			}
-		}
+		public override string Url
+			=> "! TODO !"; // $"{_Current.Site.Url}{NodemapItem?.Path?.Make("/{0}")}";
 
 
 		private string _resUrl;
@@ -56,61 +30,17 @@ namespace Ans.Net10.Web
 		}
 
 
-		/* readonly properties */
+		/* properties */
 
 
-		public override string Url
-			=> $"{_Current.Site.Url}{NodeItem?.Target?.Make("/{0}")}";
-
-
-		public MapPages MapPages
+		public string ResPath
 		{
-			get => field ?? _Current.Maps.GetMapPages(
-				NodeItem?.Target); //?? _Current.Request.NodeName);
-			set => field = value;
-		}
-
-
-		public bool HasPages
-			=> MapPages?.HasItems ?? false;
-
-
-		public bool HasSlaves
-			=> NodeItem?.HasSlaves ?? false;
-
-
-		public bool HasParentNode
-			=> ParentNode != null;
-
-
-		public MapNodesItem ParentNode
-			=> field ??= _getParentNode();
-
-
-		/* methods */
-
-
-		public void SetPages(
-			string path,
-			params MapPagesItem[] pages)
-		{
-			MapPages = new(pages, _Current.Host.VirtualPath, path);
-		}
-
-
-		/* privates */
-
-
-		private MapNodesItem _getParentNode()
-		{
-			if (NodeItem == null)
-				return null;
-			if (!NodeItem.HasMasters)
-				return null;
-			foreach (var item1 in NodeItem.Masters.Reverse())
-				if (item1.Type != MapItemTypeEnum.Group)
-					return (MapNodesItem)item1;
-			return null;
+			get => field ??= "! TODO !"; // _Current.Request.NodeName;
+			set
+			{
+				field = value;
+				_resUrl = null;
+			}
 		}
 
 	}

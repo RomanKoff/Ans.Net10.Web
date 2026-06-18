@@ -25,7 +25,7 @@ namespace Ans.Net10.Web
 
 
 		public HtmlString Render()
-		{
+		{	
 			Og_SiteName ??= current.Site.Title;
 			Og_Title ??= current.Page.ParentsTitles;
 			Og_Description ??= Description;
